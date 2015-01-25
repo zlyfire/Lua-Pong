@@ -65,7 +65,7 @@ end
 function draw.paddle(pdl, color)
   local color = color or c_white
   if pdl ~= nil then
-    local verts = pdl
+    local verts = pdl:getPosition("verts")
     --draw.poly("fill", verts, color)
     local y = 0
     for p,n in pairs(pdl) do
