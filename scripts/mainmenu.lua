@@ -24,21 +24,25 @@ local function doBtnThing(btn)
   end
 end
 
+function mainmenu.init()
+  btnSideLeft = cG.hmScrn-(cG.hmScrn/2)
+  btnSideRight = cG.hmScrn+btnSideLeft
+
+  btn_newGame = newBtn("New Game")
+  btn_options = newBtn("Options")
+
+  doneOnce = true
+end
+
 function mainmenu.update()
   if not doneOnce then
-    btnSideLeft = cG.hmScrn-(cG.hmScrn/2)
-    btnSideRight = cG.hmScrn+btnSideLeft
-
-    btn_newGame = newBtn("New Game")
-    btn_options = newBtn("Options")
-
-    doneOnce = true
+    mainmenu.init()
   end
 
   for n,btn in pairs(buttons) do
     if cCollision.basic(mouse, btn) then
       if mouse:pressed("l") then
-          btn:setState("pressed")
+        btn:setState("pressed")
       elseif mouse:released("l") and btn:getPrevState() == "pressed" then
         btn:setState("active")
         doBtnThing(btn)

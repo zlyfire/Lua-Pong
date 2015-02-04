@@ -27,13 +27,6 @@ function love.update(dt)
 end
 
 function love.draw()
-  cDraw.clear(c_black)
-  if gamePaused then
-    local t,l,b,r = 0,0,640,480
-    cDraw.poly("fill", {t,l, b,l, b,r, t,r}, {97,97,97,97})
-    return
-  end
-  
   if not playing then
     if MM then
       cMainMenu.draw()
@@ -45,6 +38,12 @@ function love.draw()
   --  gameField.draw()
   elseif playing then
     cField.draw()
+  end
+  
+  if gamePaused then
+    local t,l,b,r = cG.tScrn,cG.lScrn,cG.bScrn,cG.rScrn
+    cDraw.poly("fill", {l,t, l,b, r,b, r,t}, {97,97,97,127})
+    cDraw.text(tostring(b..r),t,l,c_green)
   end
 end
 

@@ -3,17 +3,21 @@ local paddle = {}
 function paddle:new(id)
   local pos
   local x,y = 0,cG.hmScrn
-  local width,height = 5,25
+  local width,height = 15,75
+  local kb
 
   if id == 1 then
-    x = cG.lScrn +10
+    x = cG.lScrn + width
     pos = "left"
+    kb = pl1
   elseif id == 2 then
-    x = cG.rScrn -10
+    x = cG.rScrn - (width*2)
     pos = "right"
+    kb = pl2
   else
     x = 0
     pos = nil
+    kb = nil
   end
 
   local self = {
@@ -63,16 +67,16 @@ function paddle:new(id)
   end
 
   local getPosition = function(me,kind)
-    --local kind = kind or "verts"
-    --if kind == "xy" then
-    --  return self.x,self.y
-    --elseif kind == "verts" then
-    --  return self.verts
-    --elseif kind == "bounds" then
-    --  return self.xBound,self.yBound
-    --else
+    local kind = kind or "verts"
+    if kind == "xy" then
+      return self.x,self.y
+    elseif kind == "verts" then
       return self.verts
-    --end
+    elseif kind == "bounds" then
+      return self.xBound,self.yBound
+    else
+      return self.verts
+    end
   end
 
   local setPosition = function(me,dY)
@@ -93,12 +97,6 @@ function paddle:new(id)
   end
 
   local controls = function(me)
-    local kb
-    if self.id == 1 then
-      kb = paddle1
-    else
-      kb = paddle2
-    end
     if(kb:pressed("up") or kb:pressed("right")) and self.y>cG.tScrn then
       me:setVVel(5)
     elseif(kb:pressed("down") or kb:pressed("left")) and self.y<cG.bScrn then
@@ -107,12 +105,19 @@ function paddle:new(id)
       me:setVVel(0)
     end
   end
+  
+  local updateControls = function(me)
+    kb:updateBtns()
+  end
 
   return {
     update = update,
+    updateControls = updateControls,
     controls = controls,
     getPosition = getPosition,
-    setPosition = setPosition
+    setPosition = setPosition,
+    
+    setVVel = setVerticalVelocity
   }
 end
 

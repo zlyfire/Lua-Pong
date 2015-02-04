@@ -26,8 +26,8 @@ end
 
 function init.controls()
   love.keyboard.setKeyRepeat(true)
-  paddle1 = cControls:newKB(1)
-  paddle2 = cControls:newKB(2)
+  pl1 = cControls:newKB(1)
+  pl2 = cControls:newKB(2)
   mouse = cControls:newM()
 end
 

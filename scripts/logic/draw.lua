@@ -65,14 +65,8 @@ end
 function draw.paddle(pdl, color)
   local color = color or c_white
   if pdl ~= nil then
-    local verts = pdl:getPosition("verts")
-    --draw.poly("fill", verts, color)
-    local y = 0
-    for p,n in pairs(pdl) do
-      y = y+31
-      draw.text(tostring(p),0,y,c_green)
-    end
-    draw.text(tostring(paddle1).." ? "..tostring(verts),0,y+31,c_green)
+    local verts = pdl.getPosition("verts")
+    draw.poly("fill", verts, color)
   end
 end
 
