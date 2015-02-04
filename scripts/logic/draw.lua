@@ -16,8 +16,18 @@ function draw.textC(text, x, y, maxW, color)
   end
 end
 
+function draw.textR(text, x, y, maxW, color)
+  local x = x - maxW
+  draw.setColor(color)
+  local make = love.graphics.printf
+  if text ~= nil then
+    make(text, x, y, maxW, "right")
+  end
+end
+
 function draw.image(image, x, y, rotation, scaleX, scaleY)
   local rotation = rotation or 0
+  local scaleX,scaleY = scaleX or 1,scaleY or scaleX or 1
   local make = love.graphics.draw
   if image ~= nil then
     make(image, x, y, rotation, scaleX, scaleY)
@@ -31,9 +41,14 @@ function draw.poly(mode, verts, color)
   mode = mode or "fill"
   draw.setColor(color)
   local make = love.graphics.polygon
-  if mode ~= nil and verts ~= nil then
-    make(mode,verts)
-  end
+  make(mode,verts)
+end
+
+function draw.circle(mode, x,y, radius, color)
+  mode = mode or "fill"
+  draw.setColor(color)
+  local make = love.graphics.circle
+  make(mode, x,y, radius, radius*2)
 end
 
 function draw.btn(btn, color, textColor)
@@ -70,6 +85,15 @@ function draw.paddle(pdl, color)
   end
 end
 
+function draw.ball(ball, color)
+  local color = color or c_white
+  if ball ~= nil then
+    local x,y = ball:getPosition("xy")
+    local r = ball:getPosition("radius")
+    draw.circle("fill", x,y, r, c_white)
+  end
+end
+
 function draw.entity(entity)
   if entity ~= nil then
     local x,y = entity:getPos()
@@ -103,6 +127,7 @@ function draw.setFont(name, size)
   if tFont ~= nil then
     love.graphics.setFont(tFont)
     fontH = tFont:getHeight() or size
+    cFont = tFont
   else
     --Font doesn't exist!
   end

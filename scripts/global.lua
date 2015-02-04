@@ -17,6 +17,22 @@ function global.qd(value)
   return value - 1
 end
 
+function global.uu(value)
+  if value >= 0 then
+    return value + 1
+  else
+    return value - 1
+  end
+end
+
+function global.ud(value)
+  if value >= 0 then
+    return value - 1
+  else
+    return value + 1
+  end
+end
+
 function global.between(a,l,r)
   return (a >= l and a <= r)
 end
@@ -36,6 +52,10 @@ function global.invertColor(color)
   end
     new[4] = 255
   return new
+end
+
+function global.rand(min,max)
+  return math.floor(love.math.random(min,max+1))
 end
 
 return global

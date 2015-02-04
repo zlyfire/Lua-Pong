@@ -13,7 +13,7 @@ function init.colors()
   c_red = {255,0,0,255}
   c_green = {0,255,0,255}
   c_blue = {0,0,255,255}
-  bkgColor = c_white
+  c_bkg = c_black
 end
 
 function init.text()

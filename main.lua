@@ -27,6 +27,7 @@ function love.update(dt)
 end
 
 function love.draw()
+  cDraw.clear(c_bkg)
   if not playing then
     if MM then
       cMainMenu.draw()

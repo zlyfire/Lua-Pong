@@ -2,7 +2,7 @@ local paddle = {}
 
 function paddle:new(id)
   local pos
-  local x,y = 0,cG.hmScrn
+  local x,y = 0,cG.vmScrn
   local width,height = 15,75
   local kb
 
@@ -23,21 +23,21 @@ function paddle:new(id)
   local self = {
     id=id,
     pos=pos,
+    kb=kb,
     x=x,
     y=y,
     width= width,
     height = height,
+    score = 0,
     verts = {
       x,y-(height/2),
       x,y+(height/2),
       x+width,y+(height/2),
       x+width,y-(height/2)
     },
-    xBound = {
+    edges = {
       left=x,
-      right=x+width
-    },
-    yBound = {
+      right=x+width,
       top=y-(height/2),
       bottom=y+(height/2)
     },
@@ -56,68 +56,77 @@ function paddle:new(id)
       x+width,y+(height/2),
       x+width,y-(height/2)
     }
-    self.xBound = {
+    self.edges = {
       left=x,
-      right=x+width
-    }
-    self.yBound = {
+      right=x+width,
       top=y-(height/2),
       bottom=y+(height/2)
     }
   end
 
+  local getID = function(me)
+    return self.ID
+  end
+  
   local getPosition = function(me,kind)
     local kind = kind or "verts"
     if kind == "xy" then
       return self.x,self.y
     elseif kind == "verts" then
       return self.verts
-    elseif kind == "bounds" then
-      return self.xBound,self.yBound
+    elseif kind == "edges" then
+      return self.edges
     else
       return self.verts
     end
   end
+  
+  local getScore = function(me)
+    return self.score
+  end
 
-  local setPosition = function(me,dY)
-    self.y = self.y+dY
+  local setPosition = function(me,newY)
+    self.y = newY
     refactorVertices()
   end
-
-  local setVerticalVelocity = function(me,VV)
+  
+  local updatePosition = function()
+    self.y = self.y - self.vvel
+    refactorVertices()
+  end
+  
+  local setVerticalVelocity = function(VV)
     self.vvel = VV
   end
-
-  local update = function(me)
-    local ty = self.y
-
-    ty = ty+self.vvel
-
-    self.y = ty
+  
+  local addScore = function(me,dScore)
+    self.score = self.score + dScore
   end
 
   local controls = function(me)
-    if(kb:pressed("up") or kb:pressed("right")) and self.y>cG.tScrn then
-      me:setVVel(5)
-    elseif(kb:pressed("down") or kb:pressed("left")) and self.y<cG.bScrn then
-      me:setVVel(-5)
+    if(self.kb:pressed("w") or self.kb:pressed("up")) and self.y>cG.tScrn then
+      setVerticalVelocity(5)
+    elseif(self.kb:pressed("s") or self.kb:pressed("down")) and self.y<cG.bScrn then
+      setVerticalVelocity(-5)
     else
-      me:setVVel(0)
+      setVerticalVelocity(0)
     end
   end
-  
-  local updateControls = function(me)
+
+  local update = function(me)
     kb:updateBtns()
+    controls()
+    updatePosition()
   end
 
   return {
     update = update,
-    updateControls = updateControls,
     controls = controls,
     getPosition = getPosition,
+    getID = getID,
+    addScore = addScore,
     setPosition = setPosition,
-    
-    setVVel = setVerticalVelocity
+    getScore = getScore
   }
 end
 

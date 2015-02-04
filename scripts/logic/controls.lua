@@ -1,14 +1,13 @@
 local controls = {}
 
-function controls:newKB(me,id)
+function controls:newKB(id)
   local self = {}
   if id == 1 then
     self = {
       buttons = {
         ['w']=false,
-        --['a']=false,
         ['s']=false,
-        --['d']=false
+        [' ']=false
       },
       pbuttons = {}
     }
@@ -16,9 +15,7 @@ function controls:newKB(me,id)
     self = {
       buttons = {
         ['up']=false,
-        --['left']=false,
-        ['down']=false,
-        --['right']=false
+        ['down']=false
       },
       pbuttons = {}
     }
