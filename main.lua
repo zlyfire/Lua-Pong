@@ -9,6 +9,9 @@ function love.focus(f)
 end
 
 function love.update(dt)
+  if love.timer then
+    love.timer.sleep(1/love.fps)
+  end
   if gamePaused then
     return
   end

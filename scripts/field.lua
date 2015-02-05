@@ -26,12 +26,12 @@ end
 function field.startRound()
   if not roundStart then
     if pl1:pressed(" ") then
-      local heading = cG.rand(0,10)
+      local heading,heading2 = cG.rand(0,10),cG.rand(0,10)
       while cG.between(heading, 4,6) do
-        heading = cG.rand(0,10)
+        heading,heading2 = cG.rand(0,10),cG.rand(0,10)
       end
       ball:setHVel(heading-5)
-      ball:setVVel(heading-5)
+      ball:setVVel(heading2-5)
       roundStart = true
     end
   end
